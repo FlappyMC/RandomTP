@@ -1,0 +1,8 @@
+name: SatisRandomTP
+main: fr.flappy.randomtp.SatisRandomTP
+version: 0.1-01B
+author: Flappy
+commands:
+  randomteleport:
+    description: Teleport to a random location.
+    aliases: [rtp, randomtp, rdmtp]

@@ -1,0 +1,63 @@
+# This is the configuration file for SatisRandomTP.
+# Version: 1.0
+# Config-Version: 1.0
+teleportation:
+  settings: # Settings for the random teleportation if levels are disabled.
+    enabled: true # if false, and if section 'levels' is disabled, players will no longer be allowed to rtp. If levels are enabled, refer to the 'levels' section.
+    world: "world"
+    max-distance: 1000 # in blocks, will be used to calculate the maximum distance between the player and the random location.
+    min-distance: 100 # in blocks, will be used to calculate the minimum distance between the player and the random location.
+    delay: 5 # in seconds, the delay is when the player is teleported to a random location.
+    finding-safe-location-delay: 1 # in seconds, the delay is when the plugin is searching for a new safe location for the player if the first is not safe.
+    cooldown: 60 # in minutes, the cooldown is the time the player must wait before being able to teleport to a random location again.
+messages:
+  prefix: "&8[&6SatisRandomTP&8] &r"
+  reload: "&aConfiguration reloaded!"
+  help:
+    - "&e&lSatisRandomTP &7- &aHelp &7- &cV0.1-01B"
+    - "&7- &a/rtp &7- &aTeleport to a random location."
+    - "&7- &a/rtp reload &7- &aReload the configuration."
+    - "&7- &a/rtp disable &7- &aDisable the random teleportation."
+    - "&7- &a/rtp enable &7- &aEnable the random teleportation."
+    - "&7- &a/rtp <1/2/3> &7- &aTeleport to a random location with a specific level."
+  disabled: "&Players can't teleport to a random location for now. This functionality is in maintenance."
+  enabled: "&aPlayers can now teleport to a random location."
+  will-teleport: "&aYou will be teleported to a random location in &7{delay}&a..."
+  finding-safe-location: "&aLocation not safe, finding a new safe location..."
+  canceled: "&cTeleportation cancelled, cannot find a safe location after &7{tries}&a."
+  permissions: "&cYou don't have the permission to use this command." #same permission message for all commands/levels.
+  teleport: "&aYou've been teleported to the location &7{location}&a."
+  already-teleporting: "&cYou're already teleporting to a random location. Try again later."
+  in-progress: "&aTeleportation in progress, finding a safe location. &7&o{time}"
+levels:
+  enabled: true #if false, refer to the 'settings' section.
+  level-1:
+    world: "world"
+    max-distance: 150
+    min-distance: 0
+    delay: 5
+    finding-safe-location-delay: 1
+    cooldown: 60
+  level-2:
+    world: "world"
+    max-distance: 1500
+    min-distance: 150
+    delay: 3
+    finding-safe-location-delay: 1
+    cooldown: 60
+  level-3:
+    world: "world"
+    max-distance: 15000
+    min-distance: 1500
+    delay: 1
+    finding-safe-location-delay: 1
+    cooldown: 60
+permissions:
+  use: randomtp.use
+  reload: randomtp.reload
+  disable: randomtp.disable
+  enable: randomtp.enable
+  level-1: randomtp.level.1
+  level-2: randomtp.level.2
+  level-3: randomtp.level.3
+  instant-tp: randomtp.admin # Generally for admins for preventing the delay, cooldown and lags.
