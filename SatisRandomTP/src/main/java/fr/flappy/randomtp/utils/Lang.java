@@ -13,6 +13,7 @@ public enum Lang {
     PREFIX("messages.prefix"),
     USE("messages.use"),
     DISABLED("messages.disabled"),
+    ENABLED("messages.enabled"),
     CANCELED("messages.canceled"),
     TELEPORT("messages.teleport"),
     IN_PROGRESS("messages.in-progress"),
@@ -20,12 +21,12 @@ public enum Lang {
     WILL("messages.will-teleport"),
     PERMISSIONS("messages.permissions"),
     ALREADY_TELEPORTING("messages.already-teleporting"),
+    MOVED("messages.moved"),
     FINDING("messages.finding-safe-location");
 
 
     private final String key;
     private String message;
-    private String prefix;
 
     Lang(String key) {
         this.key = key;
@@ -57,10 +58,10 @@ public enum Lang {
     }
 
     public void send(PlayerManager player){
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.translateAlternateColorCodes('&', message));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', PREFIX.getMessage()) + ChatColor.translateAlternateColorCodes('&', message));
     }
 
     public void send(CommandSender sender){
-        sender.sendMessage(prefix + message);
+        sender.sendMessage(PREFIX.getMessage() + message);
     }
 }

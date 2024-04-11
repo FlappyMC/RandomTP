@@ -18,62 +18,59 @@ public class RandomTP implements CommandExecutor {
                 Lang.PERMISSIONS.send(sender);
                 return true;
             }
+            PlayerManager playerManager = new PlayerManager((Player) sender);
             if(args.length == 0){
-                PlayerManager playerManager = new PlayerManager((Player) sender);
                 JavaPlugin.getPlugin(SatisRandomTP.class).getTeleportationManager().startTeleportationTask(playerManager, 1);
                 return true;
             }else if(args.length < 2){
                 if(args[0].equalsIgnoreCase("help")){
-                    Lang.USE.sendAll(new PlayerManager((Player) sender));
+                    Lang.USE.sendAll(playerManager);
                     return true;
                 }
                 if(args[0].equalsIgnoreCase("reload")){
-                    if(Permissions.RELOAD.check(new PlayerManager((Player) sender))){
+                    if(Permissions.RELOAD.check(playerManager)){
                         JavaPlugin.getPlugin(SatisRandomTP.class).getRtpConfig().save();
                         JavaPlugin.getPlugin(SatisRandomTP.class).getRtpConfig().reload();
                         Lang.reload();
                         Permissions.load();
-                        Lang.RELOAD.send(sender);
+                        Lang.RELOAD.send(playerManager);
                         return true;
                     }
 
-                    Lang.PERMISSIONS.send(sender);
+                    Lang.PERMISSIONS.send(playerManager);
                     return true;
                 }
                 if(args[0].equalsIgnoreCase("disable")){
-                    if(Permissions.DISABLE.check(new PlayerManager((Player) sender))){
+                    if(Permissions.DISABLE.check(playerManager)){
                         JavaPlugin.getPlugin(SatisRandomTP.class).getTeleportationManager().disable();
-                        Lang.DISABLED.send(sender);
+                        Lang.DISABLED.send(playerManager);
                         return true;
                     }
-                    Lang.PERMISSIONS.send(sender);
+                    Lang.PERMISSIONS.send(playerManager);
                     return true;
                 }
                 if(args[0].equalsIgnoreCase("enable")){
-                    if(Permissions.ENABLE.check(new PlayerManager((Player) sender))){
+                    if(Permissions.ENABLE.check(playerManager)){
                         JavaPlugin.getPlugin(SatisRandomTP.class).getTeleportationManager().enable();
-                        Lang.DISABLED.send(sender);
+                        Lang.ENABLED.send(playerManager);
                         return true;
                     }
-                    Lang.PERMISSIONS.send(sender);
+                    Lang.PERMISSIONS.send(playerManager);
                     return true;
                 }
-//                if(args[0].equalsIgnoreCase("cancel")){
-//
-//                }
                 if(args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("3")){
-                    if(Permissions.LVL.checkPerLevel(new PlayerManager((Player) sender),  Integer.parseInt(args[0]))){
-                        JavaPlugin.getPlugin(SatisRandomTP.class).getTeleportationManager().startTeleportationTask(new PlayerManager((Player) sender), Integer.parseInt(args[0]));
+                    if(Permissions.LVL.checkPerLevel(playerManager,  Integer.parseInt(args[0]))){
+                        JavaPlugin.getPlugin(SatisRandomTP.class).getTeleportationManager().startTeleportationTask(playerManager, Integer.parseInt(args[0]));
                         return true;
                     }
-                    Lang.PERMISSIONS.send(sender);
+                    Lang.PERMISSIONS.send(playerManager);
                     return true;
                 }
 
-                Lang.USE.send(sender);
+                Lang.USE.send(playerManager);
                 return false;
             }
-            Lang.USE.send(sender);
+            Lang.USE.send(playerManager);
             return false;
         }
         return false;

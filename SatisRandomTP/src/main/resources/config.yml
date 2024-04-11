@@ -20,7 +20,7 @@ messages:
     - "&7- &a/rtp disable &7- &aDisable the random teleportation."
     - "&7- &a/rtp enable &7- &aEnable the random teleportation."
     - "&7- &a/rtp <1/2/3> &7- &aTeleport to a random location with a specific level."
-  disabled: "&Players can't teleport to a random location for now. This functionality is in maintenance."
+  disabled: "&cPlayers can't teleport to a random location for now. This functionality is in maintenance."
   enabled: "&aPlayers can now teleport to a random location."
   will-teleport: "&aYou will be teleported to a random location in &7{delay}&a..."
   finding-safe-location: "&aLocation not safe, finding a new safe location..."
@@ -29,6 +29,7 @@ messages:
   teleport: "&aYou've been teleported to the location &7{location}&a."
   already-teleporting: "&cYou're already teleporting to a random location. Try again later."
   in-progress: "&aTeleportation in progress, finding a safe location. &7&o{time}"
+  moved: "&cYou've moved, teleportation cancelled."
 levels:
   enabled: true #if false, refer to the 'settings' section.
   level-1:

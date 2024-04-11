@@ -13,14 +13,6 @@ public class TeleportationUtils {
         config = JavaPlugin.getPlugin(SatisRandomTP.class).getRtpConfig();
     }
 
-    public void setMinDistance(int minDistance) {
-        getConfig().options().set("teleportation.min_distance", minDistance);
-    }
-
-    public void setMaxDistance(int maxDistance) {
-        getConfig().options().set("teleportation.max_distance", maxDistance);
-    }
-
     public void enableTeleportation() {
         getConfig().options().set("teleportation.enabled", true);
         getConfig().options().set("levels.enabled", true);
