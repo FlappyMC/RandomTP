@@ -14,6 +14,7 @@ public enum Lang {
     USE("messages.use"),
     DISABLED("messages.disabled"),
     ENABLED("messages.enabled"),
+    ERROR("messages.error"),
     CANCELED("messages.canceled"),
     TELEPORT("messages.teleport"),
     IN_PROGRESS("messages.in-progress"),

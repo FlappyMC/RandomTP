@@ -29,6 +29,7 @@ messages:
   teleport: "&aYou've been teleported to the location &7{location}&a."
   already-teleporting: "&cYou're already teleporting to a random location. Try again later."
   in-progress: "&aTeleportation in progress, finding a safe location. &7&o{time}"
+  error: "&cAn error occurred, please report an an administrator."
   moved: "&cYou've moved, teleportation cancelled."
 levels:
   enabled: true #if false, refer to the 'settings' section.

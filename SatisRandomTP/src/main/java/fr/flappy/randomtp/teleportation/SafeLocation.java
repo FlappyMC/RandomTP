@@ -4,7 +4,6 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import fr.flappy.randomtp.SatisRandomTP;
-import fr.flappy.randomtp.manager.PlayerManager;
 import fr.flappy.randomtp.utils.TeleportationUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -15,14 +14,17 @@ import java.util.Random;
 
 public class SafeLocation {
     private final TeleportationUtils teleportationUtils = JavaPlugin.getPlugin(SatisRandomTP.class).getTeleportationUtils();
-    private Location safeLocation;
+    private Location safeLocation = null;
+    private final Random random = new Random();
 
-    public SafeLocation(PlayerManager playerManager, int lvl) {
+    public SafeLocation(int lvl) {
         new BukkitRunnable() {
             @Override
             public void run() {
                 if(safeLocation != null){
+                    safeLocation.getChunk().load(true);
                     cancel();
+                    return;
                 }
                 searchSafeLocation(lvl);
             }
@@ -30,38 +32,39 @@ public class SafeLocation {
     }
 
     public void searchSafeLocation(int lvl){
-        Location currentLocation = new Location(teleportationUtils.getWorldPerLvl(lvl), 0.5, 0, 0.5);
+        if (safeLocation != null) return;
 
-        Random random = new Random();
+        safeLocation = new Location(teleportationUtils.getWorldPerLvl(lvl), 0.5, 0, 0.5);
+
         double angleX = random.nextDouble() * 2 * Math.PI;
         double angleZ = random.nextDouble() * 2 * Math.PI;
         double distanceX = teleportationUtils.getMinDistancePerLevel(lvl) + random.nextDouble() * (teleportationUtils.getMaxDistancePerLevel(lvl) - teleportationUtils.getMinDistancePerLevel(lvl));
         double distanceZ = teleportationUtils.getMinDistancePerLevel(lvl) + random.nextDouble() * (teleportationUtils.getMaxDistancePerLevel(lvl) - teleportationUtils.getMinDistancePerLevel(lvl));
 
-        int x = currentLocation.getBlockX() + (int) (distanceX * Math.cos(angleX));
-        int z = currentLocation.getBlockZ() + (int) (distanceZ * Math.cos(angleZ));
+        int x = safeLocation.getBlockX() + (int) (distanceX * Math.cos(angleX));
+        int z = safeLocation.getBlockZ() + (int) (distanceZ * Math.cos(angleZ));
         int y = teleportationUtils.getWorldPerLvl(lvl).getHighestBlockYAt(x, z);
 
-        currentLocation = new Location(teleportationUtils.getWorldPerLvl(lvl), x, y, z);
+        safeLocation.setX(x);
+        safeLocation.setY(y);
+        safeLocation.setZ(z);
 
-        Block block = currentLocation.getBlock();
+        Block block = safeLocation.getBlock();
         Block above = block.getRelative(BlockFace.UP);
         Block below = block.getRelative(BlockFace.DOWN);
-        FLocation fLocation = new FLocation(currentLocation);
+        FLocation fLocation = new FLocation(safeLocation);
         Faction faction = Board.getInstance().getFactionAt(fLocation);
 
         if (!below.getType().isSolid() || below.getType().isTransparent() || above.getType().isSolid()) {
-            System.out.println("Condition 1 not met: The block below is not solid, is transparent, or the block above is solid.");
-            return;
-        }
-        if (!below.getType().isSolid() || below.getType().isTransparent() || above.getType().isSolid()) {
-            System.out.println("Condition 2 not met: The block below is not solid, is transparent, or the block above is solid.");
+            safeLocation = null;
             return;
         }
         if(faction.isWilderness()){
-            safeLocation = new Location(teleportationUtils.getWorldPerLvl(lvl), x + 0.5, y, z + 0.5);
-        }else{
-            System.out.println("Condition 3 not met: The block below is not solid, is transparent, or the block above is solid.");
+            safeLocation.setX(x + 0.5);
+            safeLocation.setY(y);
+            safeLocation.setZ(z + 0.5);
+        } else {
+            safeLocation = null;
         }
     }
 

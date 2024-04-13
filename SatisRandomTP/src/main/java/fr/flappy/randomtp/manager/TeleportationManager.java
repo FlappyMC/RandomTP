@@ -30,7 +30,7 @@ public class TeleportationManager {
         teleportationUtils.disableTeleportation();
     }
 
-    public void enable(){
+    public void enable() {
         teleportationUtils.enableTeleportation();
     }
 }
