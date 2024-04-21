@@ -22,15 +22,16 @@ messages:
     - "&7- &a/rtp <1/2/3> &7- &aTeleport to a random location with a specific level."
   disabled: "&cPlayers can't teleport to a random location for now. This functionality is in maintenance."
   enabled: "&aPlayers can now teleport to a random location."
-  will-teleport: "&aYou will be teleported to a random location in &7{delay}&a..."
+  will-teleport: "&aYou will be teleported to a random location in &7%delay%&a..."
   finding-safe-location: "&aLocation not safe, finding a new safe location..."
-  canceled: "&cTeleportation cancelled, cannot find a safe location after &7{tries}&a."
+  canceled: "&cTeleportation cancelled, cannot find a safe location after &7%tries%&a."
   permissions: "&cYou don't have the permission to use this command." #same permission message for all commands/levels.
-  teleport: "&aYou've been teleported to the location &7{location}&a."
+  teleport: "&aYou've been teleported to the location &7%location%&a."
   already-teleporting: "&cYou're already teleporting to a random location. Try again later."
-  in-progress: "&aTeleportation in progress, finding a safe location. &7&o{time}"
+  in-progress: "&aTeleportation in progress, finding a safe location. &7&o%time%"
   error: "&cAn error occurred, please report an an administrator."
   moved: "&cYou've moved, teleportation cancelled."
+  cooldown: "&cYou must wait &7%time%&c before teleporting to a random location again."
 levels:
   enabled: true #if false, refer to the 'settings' section.
   level-1:
@@ -39,7 +40,7 @@ levels:
     min-distance: 0
     delay: 5
     finding-safe-location-delay: 1
-    cooldown: 60
+    cooldown: 3
   level-2:
     world: "world"
     max-distance: 1500
@@ -53,7 +54,21 @@ levels:
     min-distance: 1500
     delay: 1
     finding-safe-location-delay: 1
-    cooldown: 60
+    cooldown: 2
+  level-4:
+    world: "world"
+    max-distance: 15000
+    min-distance: 1500
+    delay: 1
+    finding-safe-location-delay: 1
+    cooldown: 1
+  level-5:
+    world: "world"
+    max-distance: 15000
+    min-distance: 1500
+    delay: 1
+    finding-safe-location-delay: 1
+    cooldown: 0
 permissions:
   use: randomtp.use
   reload: randomtp.reload
@@ -62,4 +77,6 @@ permissions:
   level-1: randomtp.level.1
   level-2: randomtp.level.2
   level-3: randomtp.level.3
+  level-4: randomtp.level.4
+  level-5: randomtp.level.5
   instant-tp: randomtp.admin # Generally for admins for preventing the delay, cooldown and lags.

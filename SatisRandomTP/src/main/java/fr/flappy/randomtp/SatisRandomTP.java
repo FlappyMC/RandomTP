@@ -3,17 +3,16 @@ package fr.flappy.randomtp;
 import fr.flappy.randomtp.commands.RandomTP;
 import fr.flappy.randomtp.configurations.Config;
 import fr.flappy.randomtp.listeners.TeleportationListener;
-import fr.flappy.randomtp.manager.TeleportationManager;
 import fr.flappy.randomtp.utils.Lang;
 import fr.flappy.randomtp.utils.Permissions;
-import fr.flappy.randomtp.utils.TeleportationUtils;
+import fr.flappy.randomtp.teleportation.TeleportationUtils;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SatisRandomTP extends JavaPlugin {
-    private TeleportationManager teleportationManager;
     private TeleportationUtils teleportationUtils;
     private Config config;
+    private RandomTP randomTP;
 
     @Override
     public void onEnable() {
@@ -21,11 +20,11 @@ public class SatisRandomTP extends JavaPlugin {
         Lang.load(this);
         Permissions.load();
         teleportationUtils = new TeleportationUtils();
-        teleportationManager = new TeleportationManager();
 
-        PluginCommand randomTeleportCommand = getCommand("randomteleport");
-        if (randomTeleportCommand != null) {
-            randomTeleportCommand.setExecutor(new RandomTP());
+        randomTP = new RandomTP();
+        PluginCommand command = getCommand("randomteleport");
+        if (command != null) {
+            command.setExecutor(randomTP);
         }
 
         getServer().getPluginManager().registerEvents(new TeleportationListener(), this);
@@ -38,15 +37,15 @@ public class SatisRandomTP extends JavaPlugin {
         getLogger().info("Plugin disabled");
     }
 
+    public RandomTP getRandomTP() {
+        return randomTP;
+    }
+
     public Config getRtpConfig() {
         return config;
     }
 
     public TeleportationUtils getTeleportationUtils() {
         return teleportationUtils;
-    }
-
-    public TeleportationManager getTeleportationManager() {
-        return teleportationManager;
     }
 }

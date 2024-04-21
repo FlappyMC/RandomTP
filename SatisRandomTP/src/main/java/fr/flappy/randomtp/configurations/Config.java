@@ -24,13 +24,6 @@ public class Config {
     private File file(){return new File(JavaPlugin.getPlugin(SatisRandomTP.class).getDataFolder(), name);}
     public FileConfiguration options(){return fileConfiguration;}
 
-    public void saveFile(){
-        if(!((fileConfiguration == null) || (file == null))) {
-            try{ options().save(file);}
-            catch (Exception e){e.printStackTrace();}
-        }
-    }
-
     public void save(){
         if(file == null) {
             file = file();

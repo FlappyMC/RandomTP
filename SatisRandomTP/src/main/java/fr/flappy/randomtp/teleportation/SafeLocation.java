@@ -4,7 +4,6 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import fr.flappy.randomtp.SatisRandomTP;
-import fr.flappy.randomtp.utils.TeleportationUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

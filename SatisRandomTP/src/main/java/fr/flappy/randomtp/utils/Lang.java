@@ -23,8 +23,8 @@ public enum Lang {
     PERMISSIONS("messages.permissions"),
     ALREADY_TELEPORTING("messages.already-teleporting"),
     MOVED("messages.moved"),
-    FINDING("messages.finding-safe-location");
-
+    FINDING("messages.finding-safe-location"),
+    COOLDOWN("messages.cooldown");
 
     private final String key;
     private String message;

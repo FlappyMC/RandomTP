@@ -1,6 +1,6 @@
 name: SatisRandomTP
 main: fr.flappy.randomtp.SatisRandomTP
-version: 1.3-B0
+version: '${project.version}'
 author: Flappy
 commands:
   randomteleport:
