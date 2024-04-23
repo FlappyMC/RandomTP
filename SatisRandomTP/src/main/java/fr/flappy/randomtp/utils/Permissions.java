@@ -12,6 +12,7 @@ public enum Permissions {
     DISABLE("permissions.disable"),
     ENABLE("permissions.enable"),
     LVL("permissions.level-{level}"),
+    COOLDOWN("permissions.cooldown-{level}"),
     INSTANT("permissions.instant-tp");
 
     private final String key;

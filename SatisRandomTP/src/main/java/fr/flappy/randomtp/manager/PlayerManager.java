@@ -6,9 +6,14 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public class PlayerManager {
+    private static final Map<UUID, PlayerManager> playerManagers = new HashMap<>();
     private final Player player;
     private final UUID uuid;
-    private final String username;
+
+    public PlayerManager(Player player) {
+        this.player = player;
+        this.uuid = player.getUniqueId();
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -24,22 +29,12 @@ public class PlayerManager {
         return Objects.hash(uuid);
     }
 
-    public PlayerManager(Player player) {
-        this.player = player;
-        this.uuid = player.getUniqueId();
-        this.username = player.getName();
-    }
-
-    public Player getPlayer() {
-        return player;
+    public static PlayerManager getPlayerManager(UUID uuid){
+        return playerManagers.get(uuid);
     }
 
     public UUID getUuid() {
         return uuid;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public void sendMessage(String message){
@@ -48,10 +43,6 @@ public class PlayerManager {
 
     public boolean hasPermission(String permission){
         return player.hasPermission(permission);
-    }
-
-    public Location getLocation(){
-        return player.getLocation();
     }
 
     public void teleport(Location location){

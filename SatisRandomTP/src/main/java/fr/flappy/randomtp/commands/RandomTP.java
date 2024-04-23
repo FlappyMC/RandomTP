@@ -11,6 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.UUID;
+
 public class RandomTP implements CommandExecutor {
     private final SatisRandomTP plugin = JavaPlugin.getPlugin(SatisRandomTP.class);
 
@@ -21,7 +23,14 @@ public class RandomTP implements CommandExecutor {
                 Lang.PERMISSIONS.send(sender);
                 return true;
             }
-            PlayerManager playerManager = new PlayerManager((Player) sender);
+
+            Player player = (Player) sender;
+            UUID playerUUID = player.getUniqueId();
+            PlayerManager playerManager = PlayerManager.getPlayerManager(playerUUID);
+
+            if (playerManager == null) {
+                playerManager = new PlayerManager(player);
+            }
 
             if (args.length == 0) {
                 new TeleportPlayer(playerManager, 1);

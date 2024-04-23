@@ -8,17 +8,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class TeleportationUtils {
     private final Config config;
     private final Set<PlayerManager> teleportingPlayers = new HashSet<>();
+    private final Map<PlayerManager, Long> lastTeleportTimes = new HashMap<>();
 
     public void cancelTeleportation(PlayerManager playerManager){
         teleportingPlayers.remove(playerManager);
-        TeleportPlayer.getTeleportingPlayers().get(playerManager).cancel();
+        TeleportPlayer.task().cancel();
         Lang.MOVED.send(playerManager);
+    }
+
+    public Map<PlayerManager, Long> getLastTeleportTimes() {
+        return lastTeleportTimes;
     }
 
     public Set<PlayerManager> getTeleportingPlayers() {
