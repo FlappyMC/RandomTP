@@ -29,6 +29,10 @@ public class PlayerManager {
         return Objects.hash(uuid);
     }
 
+    public static Map<UUID, PlayerManager> getPlayerManagers() {
+        return playerManagers;
+    }
+
     public static PlayerManager getPlayerManager(UUID uuid){
         return playerManagers.get(uuid);
     }

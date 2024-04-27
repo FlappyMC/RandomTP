@@ -3,34 +3,67 @@ package fr.flappy.randomtp.teleportation;
 import fr.flappy.randomtp.SatisRandomTP;
 import fr.flappy.randomtp.configurations.Config;
 import fr.flappy.randomtp.manager.PlayerManager;
-import fr.flappy.randomtp.utils.Lang;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
 public class TeleportationUtils {
     private final Config config;
-    private final Set<PlayerManager> teleportingPlayers = new HashSet<>();
-    private final Map<PlayerManager, Long> lastTeleportTimes = new HashMap<>();
+    private final Map<PlayerManager, BukkitTask> tasks = new HashMap<>();
+    private final Map<PlayerManager, Location> teleportingPlayerManagers = new HashMap<>();
+    private final Map<PlayerManager, SafeLocation> safeLocations = new HashMap<>();
+    private static final Map<UUID, Long> lastTeleportTimes = new HashMap<>();
 
-    public void cancelTeleportation(PlayerManager playerManager){
-        teleportingPlayers.remove(playerManager);
-        TeleportPlayer.task().cancel();
-        Lang.MOVED.send(playerManager);
+    public Map<PlayerManager, Location> getTeleportingPlayerManagers(){
+        return teleportingPlayerManagers;
     }
 
-    public Map<PlayerManager, Long> getLastTeleportTimes() {
+    public void clearPlayerManagersData(PlayerManager playerManager){
+        teleportingPlayerManagers.remove(playerManager);
+        safeLocations.remove(playerManager);
+        lastTeleportTimes.remove(playerManager.getUuid());
+        if(tasks.containsKey(playerManager)){
+            tasks.get(playerManager).cancel();
+            tasks.remove(playerManager);
+        }
+    }
+
+    public void clearAllPlayerManagersData(){
+        teleportingPlayerManagers.clear();
+        safeLocations.clear();
+        lastTeleportTimes.clear();
+        for(BukkitTask task : tasks.values()){
+            task.cancel();
+        }
+        tasks.clear();
+    }
+
+    public Map<UUID, Long> getLastTeleportTimes() {
         return lastTeleportTimes;
     }
 
-    public Set<PlayerManager> getTeleportingPlayers() {
-        return teleportingPlayers;
+    public Map<PlayerManager, SafeLocation> getSafeLocations() {
+        return safeLocations;
+    }
+
+    public void clearAllTasks(){
+        if(tasks.isEmpty()){
+            return;
+        }
+        tasks.forEach((playerManager, task) -> task.cancel());
+        tasks.clear();
     }
 
     public TeleportationUtils() {
         config = JavaPlugin.getPlugin(SatisRandomTP.class).getRtpConfig();
+    }
+
+    public Map<PlayerManager, BukkitTask> getTasks() {
+        return tasks;
     }
 
     public void enableTeleportation() {

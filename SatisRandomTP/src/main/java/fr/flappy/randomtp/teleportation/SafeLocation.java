@@ -5,44 +5,54 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import fr.flappy.randomtp.SatisRandomTP;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+
 import java.util.Random;
 
 public class SafeLocation {
     private final TeleportationUtils teleportationUtils = JavaPlugin.getPlugin(SatisRandomTP.class).getTeleportationUtils();
+    private final BukkitTask task;
     private Location safeLocation = null;
     private final Random random = new Random();
 
     public SafeLocation(int lvl) {
-        new BukkitRunnable() {
+        task = new BukkitRunnable() {
             @Override
             public void run() {
                 if(safeLocation != null){
                     safeLocation.getChunk().load(true);
+                    teleportationUtils.getTasks().remove(task);
                     cancel();
                     return;
                 }
                 searchSafeLocation(lvl);
             }
         }.runTaskTimer(JavaPlugin.getPlugin(SatisRandomTP.class), 0, 5L);
+        teleportationUtils.getTasks().put(null, task);
     }
 
     public void searchSafeLocation(int lvl){
         if (safeLocation != null) return;
 
-        safeLocation = new Location(teleportationUtils.getWorldPerLvl(lvl), 0.5, 0, 0.5);
+        World world = teleportationUtils.getWorldPerLvl(lvl);
+        double minDistance = teleportationUtils.getMinDistancePerLevel(lvl);
+        double maxDistance = teleportationUtils.getMaxDistancePerLevel(lvl);
+
+        safeLocation = new Location(world, 0.5, 0, 0.5);
 
         double angleX = random.nextDouble() * 2 * Math.PI;
         double angleZ = random.nextDouble() * 2 * Math.PI;
-        double distanceX = teleportationUtils.getMinDistancePerLevel(lvl) + random.nextDouble() * (teleportationUtils.getMaxDistancePerLevel(lvl) - teleportationUtils.getMinDistancePerLevel(lvl));
-        double distanceZ = teleportationUtils.getMinDistancePerLevel(lvl) + random.nextDouble() * (teleportationUtils.getMaxDistancePerLevel(lvl) - teleportationUtils.getMinDistancePerLevel(lvl));
+        double distanceX = minDistance + random.nextDouble() * (maxDistance - minDistance);
+        double distanceZ = minDistance + random.nextDouble() * (maxDistance - minDistance);
 
         int x = safeLocation.getBlockX() + (int) (distanceX * Math.cos(angleX));
         int z = safeLocation.getBlockZ() + (int) (distanceZ * Math.cos(angleZ));
-        int y = teleportationUtils.getWorldPerLvl(lvl).getHighestBlockYAt(x, z);
+        int y = world.getHighestBlockYAt(x, z);
 
         safeLocation.setX(x);
         safeLocation.setY(y);

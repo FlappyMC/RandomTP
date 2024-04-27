@@ -3,6 +3,8 @@ package fr.flappy.randomtp;
 import fr.flappy.randomtp.commands.RandomTP;
 import fr.flappy.randomtp.configurations.Config;
 import fr.flappy.randomtp.listeners.TeleportationListener;
+import fr.flappy.randomtp.manager.PlayerManager;
+import fr.flappy.randomtp.teleportation.TeleportPlayer;
 import fr.flappy.randomtp.utils.Lang;
 import fr.flappy.randomtp.utils.Permissions;
 import fr.flappy.randomtp.teleportation.TeleportationUtils;
@@ -13,13 +15,16 @@ public class SatisRandomTP extends JavaPlugin {
     private TeleportationUtils teleportationUtils;
     private Config config;
     private RandomTP randomTP;
+    private TeleportPlayer teleportPlayer;
 
     @Override
     public void onEnable() {
+        getLogger().info("SatisRandomTP loading...");
         config = new Config("config");
         Lang.load(this);
-        Permissions.load();
+        Permissions.load(this);
         teleportationUtils = new TeleportationUtils();
+        teleportPlayer = new TeleportPlayer(this);
 
         randomTP = new RandomTP();
         PluginCommand command = getCommand("randomteleport");
@@ -28,17 +33,21 @@ public class SatisRandomTP extends JavaPlugin {
         }
 
         getServer().getPluginManager().registerEvents(new TeleportationListener(), this);
-        getLogger().info("Plugin enabled");
+        getLogger().info("SatisRandomTP loaded.");
     }
 
     @Override
     public void onDisable() {
+        getLogger().info("SatisRandomTP unloading...");
+        teleportationUtils.clearAllTasks();
+        teleportationUtils.clearAllPlayerManagersData();
+        PlayerManager.getPlayerManagers().clear();
         config.save();
-        getLogger().info("Plugin disabled");
+        getLogger().info("SatisRandomTP unloaded.");
     }
 
-    public RandomTP getRandomTP() {
-        return randomTP;
+    public TeleportPlayer getTeleportPlayer() {
+        return teleportPlayer;
     }
 
     public Config getRtpConfig() {

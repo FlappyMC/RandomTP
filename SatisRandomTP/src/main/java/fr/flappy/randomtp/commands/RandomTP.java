@@ -33,7 +33,7 @@ public class RandomTP implements CommandExecutor {
             }
 
             if (args.length == 0) {
-                new TeleportPlayer(playerManager, 1);
+                plugin.getTeleportPlayer().teleportPlayer(playerManager, 1);
                 return true;
             } else if (args.length < 2) {
                 if (args[0].equalsIgnoreCase("help")) {
@@ -45,7 +45,7 @@ public class RandomTP implements CommandExecutor {
                         plugin.getRtpConfig().save();
                         plugin.getRtpConfig().reload();
                         Lang.reload();
-                        Permissions.load();
+                        Permissions.load(plugin);
                         Lang.RELOAD.send(playerManager);
                         return true;
                     }
@@ -72,19 +72,15 @@ public class RandomTP implements CommandExecutor {
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("4") || args[0].equalsIgnoreCase("5")) {
-                    if (Permissions.LVL.checkPerLevel(playerManager, Integer.parseInt(args[0]))) {
-                        new TeleportPlayer(playerManager, Integer.parseInt(args[0]));
-                        return true;
-                    }
-                    Lang.PERMISSIONS.send(playerManager);
+                    plugin.getTeleportPlayer().teleportPlayer(playerManager, Integer.parseInt(args[0]));
                     return true;
                 }
 
                 Lang.USE.send(playerManager);
-                return false;
+                return true;
             }
             Lang.USE.send(playerManager);
-            return false;
+            return true;
         }
         return false;
     }

@@ -20,16 +20,25 @@ public enum Permissions {
 
     Permissions(String key) {this.key = key;}
 
-    public static void load(){
+    private static SatisRandomTP instance;
+    public static void load(SatisRandomTP instance){
+        Permissions.instance = instance;
+        reload();
+    }
+
+    public static void reload(){
         final Config config = JavaPlugin.getPlugin(SatisRandomTP.class).getRtpConfig();
-        for (Permissions lang : Permissions.values()){
-            lang.permission = config.options().getString(lang.key);
+        for (Permissions permissions : Permissions.values()){
+            permissions.permission = config.options().getString(permissions.key);
         }
     }
 
-    public boolean checkPerLevel(PlayerManager playerManager, int lvl)  {
-        return playerManager.hasPermission(LVL.key.replace("{level}", lvl + ""));
+    public boolean checkLvlPerLevel(PlayerManager playerManager, int lvl)  {
+        final String replace = LVL.key.replace("{level}", String.valueOf(lvl));
+        LVL.permission = replace;
+        return playerManager.hasPermission(replace);
     }
+
     public boolean check(PlayerManager playerManager){
         return playerManager.hasPermission(permission);
     }

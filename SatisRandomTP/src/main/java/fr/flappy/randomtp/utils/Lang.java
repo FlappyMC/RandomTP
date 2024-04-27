@@ -14,16 +14,12 @@ public enum Lang {
     USE("messages.use"),
     DISABLED("messages.disabled"),
     ENABLED("messages.enabled"),
-    ERROR("messages.error"),
-    CANCELED("messages.canceled"),
     TELEPORT("messages.teleport"),
-    IN_PROGRESS("messages.in-progress"),
     RELOAD("messages.reload"),
     WILL("messages.will-teleport"),
     PERMISSIONS("messages.permissions"),
     ALREADY_TELEPORTING("messages.already-teleporting"),
     MOVED("messages.moved"),
-    FINDING("messages.finding-safe-location"),
     COOLDOWN("messages.cooldown");
 
     private final String key;
