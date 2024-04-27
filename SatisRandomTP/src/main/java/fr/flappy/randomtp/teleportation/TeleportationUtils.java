@@ -16,7 +16,8 @@ public class TeleportationUtils {
     private final Map<PlayerManager, BukkitTask> tasks = new HashMap<>();
     private final Map<PlayerManager, Location> teleportingPlayerManagers = new HashMap<>();
     private final Map<PlayerManager, SafeLocation> safeLocations = new HashMap<>();
-    private static final Map<UUID, Long> lastTeleportTimes = new HashMap<>();
+    private final Map<PlayerManager, Long> cooldowns = new HashMap<>();
+    private final Map<UUID, Long> lastTeleportTimes = new HashMap<>();
 
     public Map<PlayerManager, Location> getTeleportingPlayerManagers(){
         return teleportingPlayerManagers;
@@ -25,11 +26,20 @@ public class TeleportationUtils {
     public void clearPlayerManagersData(PlayerManager playerManager){
         teleportingPlayerManagers.remove(playerManager);
         safeLocations.remove(playerManager);
-        lastTeleportTimes.remove(playerManager.getUuid());
+        for(UUID uuid : lastTeleportTimes.keySet()){
+            if(uuid.equals(playerManager.getUuid())){
+                lastTeleportTimes.remove(uuid);
+            }
+        }
         if(tasks.containsKey(playerManager)){
             tasks.get(playerManager).cancel();
             tasks.remove(playerManager);
         }
+        PlayerManager.getPlayerManagers().remove(playerManager.getUuid());
+    }
+
+    public Map<PlayerManager, Long> getCooldowns() {
+        return cooldowns;
     }
 
     public void clearAllPlayerManagersData(){
@@ -80,7 +90,7 @@ public class TeleportationUtils {
         return getConfig().options().getBoolean("levels.enabled");
     }
 
-    public int getCooldownPerLvl(int lvl){
+    public long getCooldownPerLvl(int lvl){
         return getConfig().options().getInt("levels.level-" + lvl + ".cooldown");
     }
 

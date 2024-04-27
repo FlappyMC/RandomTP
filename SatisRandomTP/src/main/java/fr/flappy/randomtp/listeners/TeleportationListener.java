@@ -32,6 +32,11 @@ public class TeleportationListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event){
-        teleportationUtils.clearPlayerManagersData(PlayerManager.getPlayerManager(event.getPlayer().getUniqueId()));
+        if(PlayerManager.getPlayerManagers().containsKey(event.getPlayer().getUniqueId())){
+            teleportationUtils.clearPlayerManagersData(teleportingPlayerManagers.keySet().stream().filter(playerManager -> playerManager.getUuid() == event.getPlayer().getUniqueId()).findFirst().orElse(null));
+            return;
+        }
+        PlayerManager playerManager = new PlayerManager(event.getPlayer());
+        teleportationUtils.clearPlayerManagersData(playerManager);
     }
 }
